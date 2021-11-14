@@ -1,5 +1,4 @@
-import React, { FunctionComponent } from "react";
-import { Routes, Route } from "react-router-dom";
+import { FunctionComponent } from "react";
 
 const Index: FunctionComponent = () => {
   return <div></div>;

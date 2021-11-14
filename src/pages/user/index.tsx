@@ -1,8 +1,7 @@
-import React, { FunctionComponent } from "react";
-import { Routes, Route } from "react-router-dom";
+import { FunctionComponent } from "react";
 
-const Index: FunctionComponent = () => {
-  return <div></div>;
+const Index: FunctionComponent = (perops) => {
+  return <h2>1234</h2>;
 };
 
 export default Index;
