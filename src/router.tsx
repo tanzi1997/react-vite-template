@@ -93,7 +93,6 @@ const Router = () => {
         ) : (
           <Route key={value.key} element={value.element}>
             {value.children?.map((value) => {
-              console.log(value);
               return (
                 <Route
                   key={value.path}

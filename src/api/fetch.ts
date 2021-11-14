@@ -1,12 +1,10 @@
-type Method = "GET" | "POST" | "PUT" | "DELETE";
+import environment from "../config/development";
 
-export interface FromData {
-  [key: string]: any;
-}
+type Method = "GET" | "POST" | "PUT" | "DELETE";
 
 const token = sessionStorage.getItem("token");
 
-async function ajax(url: string, method: Method, body?: BodyInit) {
+async function request(url: string, method: Method, body?: BodyInit) {
   const headers = new Headers();
   headers.append("content-type", "application/json; charset=utf-8");
   if (token) {
@@ -22,7 +20,7 @@ async function ajax(url: string, method: Method, body?: BodyInit) {
   if (!body) delete init.body;
 
   try {
-    const response = await fetch(`${environment.server.url}/${url}`, init);
+    const response = await fetch(`${environment.fetch.baseUrl}/${url}`, init);
     if (response.ok) {
       if (response.status === 204) return Promise.resolve();
       return response.json();
@@ -39,24 +37,24 @@ async function ajax(url: string, method: Method, body?: BodyInit) {
 }
 
 export default {
-  get: (url: string, query: FromData) => {
-    if (Object.keys(query).length === 0) return ajax(url, "GET");
+  get: (url: string, query: object) => {
+    if (Object.keys(query).length === 0) return request(url, "GET");
     const SearchParams = new URLSearchParams();
     for (const [key, value] of Object.entries(query)) {
-      SearchParams.append(key, value);
+      SearchParams.append(key, value as string);
     }
     const result = `${url}?${SearchParams.toString()}`;
-    return ajax(result, "GET");
+    return request(result, "GET");
   },
-  post: (url: string, body: FromData) => {
+  post: (url: string, body: object) => {
     const data = JSON.stringify(body);
-    return ajax(url, "POST", data);
+    return request(url, "POST", data);
   },
   put: (url: string, id: string | number, body: unknown) => {
     const data = JSON.stringify(body);
-    return ajax(`${url}/${id}`, "PUT", data);
+    return request(`${url}/${id}`, "PUT", data);
   },
   delete: (url: string, id: string | number) => {
-    return ajax(`${url}/${id}`, "DELETE");
+    return request(`${url}/${id}`, "DELETE");
   },
 };
