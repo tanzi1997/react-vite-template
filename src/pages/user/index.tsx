@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 
-const Index: FunctionComponent = (perops) => {
+const Index: FunctionComponent = () => {
   return <h2>1234</h2>;
 };
 

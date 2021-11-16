@@ -1,5 +1,3 @@
-import environment from "../config/development";
-
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
 const token = sessionStorage.getItem("token");
@@ -7,6 +5,7 @@ const token = sessionStorage.getItem("token");
 async function request(url: string, method: Method, body?: BodyInit) {
   const headers = new Headers();
   headers.append("content-type", "application/json; charset=utf-8");
+
   if (token) {
     headers.append("authorization", token);
   }
@@ -20,7 +19,10 @@ async function request(url: string, method: Method, body?: BodyInit) {
   if (!body) delete init.body;
 
   try {
-    const response = await fetch(`${environment.fetch.baseUrl}/${url}`, init);
+    const response = await fetch(
+      `${import.meta.env.VITE_FETCH_BASE_URL}/${url}`,
+      init
+    );
     if (response.ok) {
       if (response.status === 204) return Promise.resolve();
       return response.json();
